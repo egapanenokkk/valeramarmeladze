@@ -39,7 +39,10 @@ def save_user(message):
         with open('users.txt', 'a', encoding='utf-8') as file:  # записываем инфу о пользователе в файл
             file.write(f'{message.contact}\n')
     elif message.location is not None:  # если локацию передали
-        city = get_city(message.location.latitude, message.location.longitude)
+        lat = message.location.latitude
+        lon = message.location.longitude
+        city = get_city(lat, lon)
+        forecast = get_forecast(lat, lon)
         bot.send_message(message.chat.id, str(city))
 
 
