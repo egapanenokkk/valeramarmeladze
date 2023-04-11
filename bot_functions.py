@@ -35,9 +35,14 @@ def button_message(message):
 
 @bot.message_handler(content_types=['contact', 'location'])
 def save_user(message):
-    if message.contact is not None:  # если номер телефона передали
-        with open('users.txt', 'a', encoding='utf-8') as file:  # записываем инфу о пользователе в файл
-            file.write(f'{message.contact}\n')
+    if message.contact is not None:
+        connect = connect_db()
+        cont = message.contact
+        u = add_user(cont.first_name, cont.last_name, cont.user_id, cont.phone_number, connect)# если номер телефона передали
+        if u is not None:
+            bot.send_message(message.chat.id, 'Спасибо, но дату  воей смерти было бы приятней увидеть ХО')
+        else:
+            bot.send_message(message.chat.id, 'Лох, ты это уже кидал')
     elif message.location is not None:  # если локацию передали
         lat = message.location.latitude
         lon = message.location.longitude
