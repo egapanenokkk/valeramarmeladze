@@ -1,5 +1,4 @@
 import requests as r
-import geopy
 import os
 from datetime import datetime
 import  sqlite3
@@ -24,11 +23,6 @@ def send_image():
     return img_url
 
 
-def get_city(lat, lon):
-    locator = geopy.geocoders.Nominatim(user_agent='geoapiExercises')
-    location = locator.reverse(str(lat) + ',' + str(lon))
-    address = location.raw['address']
-    return address
 
 
 def get_forecast(lat, lon):
@@ -41,6 +35,21 @@ def get_forecast(lat, lon):
         'lang':'ru',
     }
     resp = r.get(url, params=params).json()
+    text = '<strong>{}</strong> <i>{}</i>: \n{}°C, {}\n\n'
+    res = ''
+
+    for data in resp['list']:
+        date = datetime.fromtimestamp(data['dt'])
+        date_res = date.strftime('%d.%m.%Y')
+        temp = data['main']['temp']
+        weather = data['weather'][0]['description']
+
+        if data.hour == 15:
+            daytime = 'днём'
+            res += text.format(date_res, daytime, temp, weather)
+        elif data.hour == 21:
+            daytime = 'вечером'
+            res += text.format(date_res, daytime, temp, weather)
     return resp
 
 

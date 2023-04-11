@@ -41,9 +41,8 @@ def save_user(message):
     elif message.location is not None:  # если локацию передали
         lat = message.location.latitude
         lon = message.location.longitude
-        city = get_city(lat, lon)
         forecast = get_forecast(lat, lon)
-        bot.send_message(message.chat.id, str(city))
+        bot.send_message(message.chat.id, text=forecast, parse_mode='html')
 
 
 @bot.message_handler(content_types=['text'])  # эта функция обрабатывает текст
