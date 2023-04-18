@@ -13,10 +13,10 @@ def start(message):  # параметр - это сообщение от пол�
         user = message.chat.username
         template = make_tamplate('templates/start.html')
         msg = template.render(username=user)
-        bot.send_message(message.chat.id, f"Hello, {}!👋")
+        bot.send_message(message.chat.id, msg, parse_mode='html')
     elif message.text == '/help':
         template = make_tamplate('templates/start.html')
-        msg = template.render
+        msg = template.render()
         bot.send_message(message.chat.id, msg, parse_mode='html')
     elif message.text == '/dog':
         img = send_image()
