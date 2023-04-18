@@ -2,6 +2,7 @@ import requests as r
 import os
 from datetime import datetime
 import  sqlite3
+from jinja2 import Template
 
 
 def git_search(query, language='python'):
@@ -67,3 +68,10 @@ def add_user(f_name, l_name, tg_id, phone, connection):
         return 0
     except:
         return None
+
+
+def make_tamplate(filename):
+    with open(filename, 'r') as f:
+        text = f.read()
+    template = Template(text)
+    return template

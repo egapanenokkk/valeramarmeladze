@@ -5,19 +5,19 @@ from stuff import *
 token = os.environ.get('TELEGRAM_KEY')
 bot = telebot.TeleBot(token)  # сам бот
 
-answers = {
-    'help': '''Введи запрос для поиска в формате 
-    <i>"GIT запрос язык_программирования"</i> 
-    и я дам тебе список ссылок.'''
-}
 
 
 @bot.message_handler(commands=['start', 'help', 'dog'])
 def start(message):  # параметр - это сообщение от пользователя
     if message.text == '/start':
-        bot.send_message(message.chat.id, f"Hello, {message.chat.username}!👋")
+        user = message.chat.username
+        template = make_tamplate('templates/start.html')
+        msg = template.render(username=user)
+        bot.send_message(message.chat.id, f"Hello, {}!👋")
     elif message.text == '/help':
-        bot.send_message(message.chat.id, text=answers['help'], parse_mode='html')
+        template = make_tamplate('templates/start.html')
+        msg = template.render
+        bot.send_message(message.chat.id, msg, parse_mode='html')
     elif message.text == '/dog':
         img = send_image()
         bot.send_photo(message.chat.id, photo=img)
